@@ -28,7 +28,7 @@ The following Terraform Modules aim to deploy a Highly Available Architecture su
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](https://www.terraform.io/downloads.html) | >= 1.9.5 |
+| <a name="requirement_terraform"></a> [terraform](https://www.terraform.io/downloads.html) | >= 0.14.9 |
 | <a name="requirement_aws"></a> [aws](https://registry.terraform.io/providers/hashicorp/aws/latest) | >= 3.63 |
 
 

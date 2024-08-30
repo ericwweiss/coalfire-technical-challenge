@@ -1,6 +1,6 @@
-#Author: Eric Weiss
+#Author: Keegan Flood
 #Purpose: Coalfire Technical Challenge
-#Date: 29 August 2024
+#Date: 23 November 2021
 
 terraform {
   required_providers {
@@ -9,6 +9,7 @@ terraform {
       version = "~> 5.65.0"
     }
   }
+
   required_version = ">= 1.9.5"
 }
 
