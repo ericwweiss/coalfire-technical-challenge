@@ -64,7 +64,7 @@ data "aws_ami_ids" "redhat" {
 
   filter {
     name   = "name"
-    values = ["Red Hat Enterprise Linux 8 (HVM)*"]
+    values = ["Red Hat Enterprise Linux 9 (HVM)*"]
   }
   filter {
     name   = "virtualization-type"
