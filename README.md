@@ -17,20 +17,16 @@ $ terraform plan
 $ terraform apply
 ```
 
-This example may create resources that are outside of AWS Free Tier if left running. Run `Terraform Destroy` when you are finished 
+This example may create resources that are outside of AWS Free Tier if left running, such as NAT Gateway, EC2, VPC & Data Transfer. Run `Terraform Destroy` when you are finished.
 
 
 ## Resources Deployed
 The following Terraform Modules aim to deploy a Highly Available Architecture suitable for development. 1 VPC,
-4 Subnets (2 Private/2 Public), Redhat Instances to the Public Subnets, and an Autoscaling Group to the Private Subnets. 
+4 Subnets (2 Private/2 Public), 1 Redhat Instance to the 2nd Public Subnet, and an Autoscaling Group with 2 Redhat instances to the Private Subnets. 
 
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](https://www.terraform.io/downloads.html) | >= 0.14.9 |
-| <a name="requirement_aws"></a> [aws](https://registry.terraform.io/providers/hashicorp/aws/latest) | >= 3.63 |
-
-
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
+| <a name="requirement_terraform"></a> [terraform](https://www.terraform.io/downloads.html) | >= 1.9.5 |
+| <a name="requirement_aws"></a> [aws](https://registry.terraform.io/providers/hashicorp/aws/latest) | >= 5.65.0 |
