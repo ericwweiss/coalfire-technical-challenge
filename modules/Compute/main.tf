@@ -37,12 +37,39 @@ resource "aws_security_group" "redhat_sg" {
   }
 }
 
+# Added this IAM role for EC2 instance profile 9/1/2024
+resource "aws_iam_instance_profile" "resources-iam-profile" {
+name = "ec2_profile"
+role = aws_iam_role.resources-iam-role.name
+}
+resource "aws_iam_role" "resources-iam-role" {
+name        = "ssm-role"
+description = "Role for EC2 resources"
+assume_role_policy = <<EOF
+{
+"Version": "2012-10-17",
+"Statement": {
+"Effect": "Allow",
+"Principal": {"Service": "ec2.amazonaws.com"},
+"Action": "sts:AssumeRole"
+}
+}
+EOF
+
+}
+resource "aws_iam_role_policy_attachment" "resources-ssm-policy" {
+role       = aws_iam_role.resources-iam-role.name
+policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
 resource "aws_instance" "redhat_instance" {
   depends_on             = [aws_security_group.redhat_sg]
   ami                    = var.instance_ami
   instance_type          = var.instance_type
   key_name               = var.key_name
   vpc_security_group_ids = [aws_security_group.redhat_sg.id]
+  # Added this Instance Profile 9/1/2024
+  iam_instance_profile = aws_iam_instance_profile.resources-iam-profile.name  
   subnet_id              = "${element(var.public_subnet_id_list, 1)}"
   root_block_device {
     delete_on_termination = true
@@ -79,6 +106,9 @@ resource "aws_launch_configuration" "launch_config" {
   user_data     = <<-EOF
                   #!/bin/bash
                   sudo yum update -y
+                  sudo dnf install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+                  sudo systemctl enable amazon-ssm-agent
+                  sudo systemctl start amazon-ssm-agent
                   sudo yum install -y httpd.x86_64
                   systemctl start httpd.service
                   systemctl enable httpd.service

@@ -37,7 +37,7 @@ variable "availability_zone" {
 
 variable "instance_ami" {
     type        = string
-    default     = "ami-0aa8fc2422063977a" #Redhat
+    default     = "ami-0aa8fc2422063977a" # Redhat 9 64-bit x86 AMI id
     description = "ami"
 
 }
