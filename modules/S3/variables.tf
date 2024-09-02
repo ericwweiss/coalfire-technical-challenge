@@ -1,5 +1,11 @@
-variable "bucket_name" {
-    default     = "coalfire-media-kf-tech" 
+variable "bucket_name_1" {
+    default     = "coalfire-images-eric-weiss" 
+    type        = string
+    description = "Bucket Name"
+}
+
+variable "bucket_name_2" {
+    default     = "coalfire-logs-eric-weiss" 
     type        = string
     description = "Bucket Name"
 }
@@ -19,5 +25,5 @@ variable "region" {
 variable "environment" {
     default     = "Coalfire"
     type        = string
-    description = "Environment to Deploy to"
+    description = "poc"
 }

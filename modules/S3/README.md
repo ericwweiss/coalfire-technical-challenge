@@ -1,7 +1,13 @@
 # S3 Module
-Simple S3 Module to provision a bucket with two folders `images` and `logs`. 
-The `images` folder will be transitioned to the Glacier Storage Class after 90 days.
-The `logs` folder will be deleted after 90 days.
+Simple S3 Module to provision two buckets containing the following sub folders.
+- `Images`
+`../Memes`
+- `Logs`
+`../Active`
+`../Inactive`
+
+The `Images` folder will be transitioned to the Glacier Storage Class after 90 days.
+The `Logs` folder will be deleted after 90 days.
 
 ## Usage
 To run this example you need to execute:

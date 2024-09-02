@@ -26,7 +26,7 @@ resource "aws_security_group" "redhat_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["161.97.203.160/32"] # Eric's Mac IP address for public access - add your public IP here if you want to test ssh connectivity to the public EC2 instance.
   }
 
   egress {
@@ -52,7 +52,7 @@ assume_role_policy = <<EOF
 "Effect": "Allow",
 "Principal": {"Service": "ec2.amazonaws.com"},
 "Action": "sts:AssumeRole"
-}
+  }
 }
 EOF
 
@@ -68,6 +68,8 @@ resource "aws_instance" "redhat_instance" {
   instance_type          = var.instance_type
   key_name               = var.key_name
   vpc_security_group_ids = [aws_security_group.redhat_sg.id]
+  # Added user_data script 9/1/2024
+  user_data = var.script_public
   # Added this Instance Profile 9/1/2024
   iam_instance_profile = aws_iam_instance_profile.resources-iam-profile.name  
   subnet_id              = "${element(var.public_subnet_id_list, 1)}"
@@ -103,18 +105,9 @@ resource "aws_launch_configuration" "launch_config" {
   name_prefix   = "coalfire-"
   image_id      = var.instance_ami
   instance_type = var.instance_type
-  user_data     = <<-EOF
-                  #!/bin/bash
-                  sudo yum update -y
-                  sudo dnf install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
-                  sudo systemctl enable amazon-ssm-agent
-                  sudo systemctl start amazon-ssm-agent
-                  sudo yum install -y httpd.x86_64
-                  systemctl start httpd.service
-                  systemctl enable httpd.service
-                  echo “Hello Coalfire from $(hostname -f)” > /var/www/html/index.html
-                  EOF
   security_groups = ["${aws_security_group.autoscaling_sg.id}"]
+  # Add user_data here, to install httpd to private instances 9/1/2024
+  user_data = var.script_private
   root_block_device {
     volume_size = var.ebs_storage
   }

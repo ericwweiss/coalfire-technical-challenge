@@ -117,12 +117,12 @@ resource "aws_route" "public_igw" {
   gateway_id             = "${aws_internet_gateway.igw.id}"
 }
 
-#resource "aws_route" "private_nat_gateway" {
-#  count                  = length(var.private_subnets)
-#  route_table_id         = "${aws_route_table.private_rt.id}"
-#  destination_cidr_block = "0.0.0.0/0"
-#  nat_gateway_id         = "${aws_nat_gateway.nat_gateways.1.id}"
-#}
+resource "aws_route" "private_nat_gateway" {
+  count                  = length(var.private_subnets)
+  route_table_id         = "${aws_route_table.private_rt.id}"
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = "${aws_nat_gateway.nat_gateways.1.id}"
+}
 
 #-------------Route Table Associations-----------------------
 

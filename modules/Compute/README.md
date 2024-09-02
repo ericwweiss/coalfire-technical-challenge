@@ -20,7 +20,7 @@ $ terraform apply
 | <a name="public_subnet_id_list"></a> [public_subnet_id_list](#output\_public_subnet_id_list) | List of IDs for public subnets|
 | <a name="private_subnet_id_list"></a> [private_subnet_id_list](#output\_private_subnet_id_list) | List of IDs for private subnets|
 | <a name="region"></a> [region](#output\_region) | Desired Region applied to the provider, defaults to `us-east-2` |
-| <a name="availability_zone"></a> [availability_zone](#output\_availability_zone) | Target AZ , defaults to `us-east-2b` |
+| <a name="availability_zones"></a> [availability_zones](#output\_availability_zone) | Target AZs `us-east-2b` & `us-east-2b` |
 | <a name="instance_ami"></a> [instance_ami](#output\_instance_ami) | AMI you wish to utilize , defaults to Redhat `"ami-0ba62214afa52bec7"`. You can edit the data query within the module to retrieve the latest version of your desired image |
 | <a name="ebs_storage"></a> [ebs_storage](#output\_ebs_storage) | Desired storage capacity in GB , defaults to `20` |
 | <a name="instance_type"></a> [instance_type](#output\_instance_type) | Desired instance type , defaults to `t2.micro` |
