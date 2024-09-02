@@ -21,7 +21,7 @@ This example may create resources that are outside of AWS Free Tier if left runn
 
 
 ## Resources Deployed
-The following Terraform Modules aim to deploy a Highly Available Architecture suitable for development. 1 VPC,
+The following Terraform Modules deploy a Highly Available Architecture suitable for development. 1 VPC,
 4 Subnets (2 Private/2 Public), 1 Redhat Instance to the 2nd Public Subnet, and an Autoscaling Group with 2 Redhat instances to the Private Subnets. 
 
 ## Requirements
