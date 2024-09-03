@@ -69,7 +69,7 @@ resource "aws_s3_bucket" "logs_bucket" {
 
 resource "aws_s3_object" "Archive" {
   bucket       = "${aws_s3_bucket.images_bucket.id}"
-  key          = "Memes/"
+  key          = "archive/"
   content_type = "application/x-directory"
 }
 
