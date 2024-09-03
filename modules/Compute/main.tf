@@ -43,7 +43,8 @@ name = "ec2_profile"
 role = aws_iam_role.resources-iam-role.name
 }
 resource "aws_iam_role" "resources-iam-role" {
-name        = "ssm-role"
+#name        = "ssm-role"
+name        = "ec2-resources-role"
 description = "Role for EC2 resources"
 assume_role_policy = <<EOF
 {
@@ -58,8 +59,15 @@ EOF
 
 }
 resource "aws_iam_role_policy_attachment" "resources-ssm-policy" {
+
 role       = aws_iam_role.resources-iam-role.name
 policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+resource "aws_iam_role_policy_attachment" "resources-s3-policy" {
+
+role       = aws_iam_role.resources-iam-role.name
+policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
 
 resource "aws_instance" "redhat_instance" {
@@ -68,11 +76,9 @@ resource "aws_instance" "redhat_instance" {
   instance_type          = var.instance_type
   key_name               = var.key_name
   vpc_security_group_ids = [aws_security_group.redhat_sg.id]
-  # Added user_data script 9/1/2024
-  user_data = var.script_public
-  # Added this Instance Profile 9/1/2024
-  iam_instance_profile = aws_iam_instance_profile.resources-iam-profile.name  
-  subnet_id              = "${element(var.public_subnet_id_list, 1)}"
+  user_data = var.script_public # user_data script 9/1/2024
+  iam_instance_profile = aws_iam_instance_profile.resources-iam-profile.name # Instance Profile 9/1/2024
+  subnet_id               = "${element(var.public_subnet_id_list, 1)}"
   root_block_device {
     delete_on_termination = true
     volume_size           = var.ebs_storage
@@ -105,9 +111,9 @@ resource "aws_launch_configuration" "launch_config" {
   name_prefix   = "coalfire-"
   image_id      = var.instance_ami
   instance_type = var.instance_type
+  iam_instance_profile = aws_iam_instance_profile.resources-iam-profile.name # Add instance profile 9/2/2024
   security_groups = ["${aws_security_group.autoscaling_sg.id}"]
-  # Add user_data here, to install httpd to private instances 9/1/2024
-  user_data = var.script_private
+  user_data = var.script_private # user_data to install httpd to private instances 9/1/2024
   root_block_device {
     volume_size = var.ebs_storage
   }
@@ -154,7 +160,8 @@ resource "aws_security_group_rule" "egress_all" {
 
 resource "aws_autoscaling_group" "autoscale_group" {
   launch_configuration = "${aws_launch_configuration.launch_config.id}"
-  vpc_zone_identifier  = ["${element(var.private_subnet_id_list, 1)}"]
+  #vpc_zone_identifier  = ["${element(var.private_subnet_id_list, 1)}"]
+  vpc_zone_identifier  = var.private_subnet_id_list # use both AZs for private subnets 9/3/2024
   target_group_arns    = ["${aws_lb_target_group.alb_target_group.arn}"]
   min_size             = 2
   max_size             = 6
