@@ -69,6 +69,7 @@ variable "script_public" {
     sudo dnf install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
     sudo systemctl enable amazon-ssm-agent
     sudo systemctl start amazon-ssm-agent
+    sudo insights-client --register
     EOF
 }
 
@@ -83,5 +84,6 @@ variable "script_private" {
     systemctl start httpd.service
     systemctl enable httpd.service
     echo “Hello Coalfire from $(hostname -f)” > /var/www/html/index.html
+    sudo insights-client --register
     EOF
 }
