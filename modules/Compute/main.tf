@@ -26,7 +26,7 @@ resource "aws_security_group" "redhat_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["161.97.203.160/32"] # Eric's Mac IP address for public access - add your public IP here if you want to test ssh connectivity to the public EC2 instance.
+    cidr_blocks = ["192.168.0.1/32"] # Personal IP address for public access - add your public IP here if you want to test ssh connectivity to the public EC2 instance.
   }
 
   egress {
